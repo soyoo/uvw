@@ -32,8 +32,13 @@ struct UVW_EXTERN SendEvent {};
  *
  * It will be emitted by UDPHandle according with its functionalities.
  */
-struct UVW_EXTERN UDPDataEvent {
+<<<<<<< HEAD
+struct UDPDataEvent {
     explicit UDPDataEvent(Addr sndr, std::unique_ptr<char[]> buf, std::size_t len, bool part) noexcept;
+=======
+struct UVW_EXTERN UDPDataEvent {
+    explicit UDPDataEvent(Addr sndr, std::unique_ptr<const char[]> buf, std::size_t len, bool part) noexcept;
+>>>>>>> 5ccf949... shared libs: export classes with functions implemented in .cpp files
 
     std::unique_ptr<char[]> data; /*!< A bunch of data read on the stream. */
     std::size_t length;  /*!< The amount of data read on the stream. */
@@ -122,7 +127,9 @@ public:
     using IPv4 = uvw::IPv4;
     using IPv6 = uvw::IPv6;
 
-    explicit UDPHandle(ConstructorAccess ca, std::shared_ptr<Loop> ref, unsigned int f = {});
+    using Handle::Handle;
+
+    explicit UDPHandle(ConstructorAccess ca, std::shared_ptr<Loop> ref, unsigned int f);
 
     /**
      * @brief Initializes the handle. The actual socket is created lazily.
@@ -577,12 +584,6 @@ private:
 };
 
 
-/**
- * @cond TURN_OFF_DOXYGEN
- * Internal details not to be documented.
- */
-
-
 // (extern) explicit instantiations
 
 extern template UVW_EXTERN void UDPHandle::connect<IPv4>(std::string, unsigned int);
@@ -641,13 +642,6 @@ extern template UVW_EXTERN int UDPHandle::trySend<IPv6>(Addr, char *, unsigned i
 
 extern template UVW_EXTERN void UDPHandle::recv<IPv4>();
 extern template UVW_EXTERN void UDPHandle::recv<IPv6>();
-
-
-/**
- * Internal details not to be documented.
- * @endcond
- */
-
 
 }
 
